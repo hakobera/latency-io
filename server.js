@@ -1,18 +1,19 @@
 
-var express = require('express')
-  , sio = require('socket.io')
+var express = require('express'),
+    http = require('http'),
+    app = express(),
+    server = http.createServer(app),
+    io = require('socket.io').listen(server);
 
-app = express.createServer();
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
   res.sendfile('index.html');
 });
 
-app.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || 3000);
 
 // socket.io
-var io = sio.listen(app);
 io.set('log level', false);
 io.set('transports', [process.env.LATENCY_TRANSPORT || 'xhr-polling']);
 io.sockets.on('connection', function (socket) {
