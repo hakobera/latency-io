@@ -9,7 +9,7 @@ app.get('/', function (req, res) {
   res.sendfile('index.html');
 });
 
-app.listen(process.env.LATENCY_PORT || 3000);
+app.listen(process.env.PORT || 3000);
 
 // socket.io
 var io = sio.listen(app);
