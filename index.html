@@ -6,18 +6,17 @@
     <script src="/smoothie.js"></script>
     <script>
       window.onload = function () {
-        var chart = new SmoothieChart({ grid: { fillStyle: "#ffffff"}, labels: { fillStyle: "#000" } })
-          , latency = new TimeSeries()
+        var chart = new SmoothieChart({ grid: { fillStyle: "#ffffff"}, labels: { fillStyle: "#000" } }),
+            latency = new TimeSeries();
 
         chart.addTimeSeries(latency, { strokeStyle: 'rgba(69, 183, 244, 1)', fillStyle: 'rgba(255, 255, 255, 1)', lineWidth: 4 });
         chart.streamTo(document.getElementById("smoothie"), 500);
-        document.getElementById('v').innerHTML = io.version;
 
-        var socket = io.connect()
-          , lastDate
+        var socket = io(),
+            lastDate;
 
         socket.on('connect', function () {
-          document.getElementById('transport').innerHTML = socket.socket.transport.name;
+          //document.getElementById('transport').innerHTML = socket.socket.transport.name;
           var allMs = 0;
           var allCount = 0;
           var highest = 0;
@@ -60,7 +59,7 @@
     </style>
   </head>
   <body>
-    <h1>Socket.IO v<span id="v"></span> - <em id="transport"></em> count: <span id="c"></span>, latency (mean): <span id="l"></span> ms, highest: <span id="h"></span> ms</h1>
+    <h1>Socket.IO count: <span id="c"></span>, latency (mean): <span id="l"></span> ms, highest: <span id="h"></span> ms</h1>
     <canvas id="smoothie">
   </body>
 </html>

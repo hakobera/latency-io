@@ -1,23 +1,20 @@
-
-var express = require('express'),
-    http = require('http'),
-    app = express(),
-    server = http.createServer(app),
-    io = require('socket.io').listen(server);
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
-  res.sendfile('index.html');
+  res.sendFile(__dirname + '/index.html');
 });
 
-server.listen(process.env.PORT || 3000);
+var port = process.env.PORT || 3000;
+http.listen(port, function () {
+  console.log('listening on port *:%d', port);
+});
 
-// socket.io
-io.set('log level', false);
-io.set('transports', [process.env.LATENCY_TRANSPORT || 'xhr-polling']);
-io.set("polling duration", 10); 
-io.sockets.on('connection', function (socket) {
+io.on('connection', function(socket) {
   socket.on('message', function (msg) {
     socket.send(msg);
   });
